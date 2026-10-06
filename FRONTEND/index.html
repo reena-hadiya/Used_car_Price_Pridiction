@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CarPrice AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <div class="page">
+
+        <header class="topbar">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    🚗
+                </div>
+
+                <div>
+                    <h2>CarPrice <span>AI</span></h2>
+
+                    <p>Used Car Price Prediction</p>
+                </div>
+
+            </div>
+
+
+            <div class="ml-tag">
+                🤖 Machine Learning
+            </div>
+
+        </header>
+
+        <section class="intro">
+
+            <div>
+
+                
+
+                <h1>
+                    <span>Used Car Price Prediction</span>
+                </h1>
+
+                <p>
+                </p>
+
+            </div>
+
+        </section>
+
+        <main class="card">
+
+
+            <div class="card-header">
+
+                <div>
+
+                    <p class="small-title">
+                        CAR DETAILS
+                    </p>
+
+                    <h2>
+                        Enter your car information
+                    </h2>
+
+                </div>
+
+                <span class="required">
+                    * Required
+                </span>
+
+            </div>
+
+            <form
+                action="/predict"
+                method="POST"
+                class="form"
+            >
+                <div class="field">
+
+                    <label for="brand">
+                        Brand
+                    </label>
+
+                    <select
+                        id="brand"
+                        name="brand"
+                        required
+                    >
+
+                        <option value="">
+                            Select brand
+                        </option>
+
+                        {% for brand in brand_models.keys() %}
+
+                        <option
+                            value="{{ brand }}"
+                            {% if selected_brand == brand %}
+                            selected
+                            {% endif %}
+                        >
+                            {{ brand }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                    <small>
+                        Select a brand from the available dataset.
+                    </small>
+
+                </div>
+
+                <div class="field">
+
+                    <label for="model_name">
+                        Model
+                    </label>
+
+                    <select
+                        id="model_name"
+                        name="model_name"
+                        required
+                        disabled
+                    >
+
+                        <option value="">
+                            Select brand first
+                        </option>
+
+                    </select>
+
+                    <small>
+                        Models are filtered according to the brand.
+                    </small>
+
+                </div>
+                <div class="field">
+
+                    <label for="fuel_type">
+                        Fuel Type
+                    </label>
+
+                    <select
+                        id="fuel_type"
+                        name="fuel_type"
+                        required
+                    >
+
+                        <option value="">
+                            Select fuel type
+                        </option>
+
+                        <option value="Petrol">
+                            Petrol
+                        </option>
+
+                        <option value="Diesel">
+                            Diesel
+                        </option>
+
+                        <option value="Petrol + 1">
+                            Petrol + 1
+                        </option>
+
+                        <option value="CNG + 1">
+                            CNG + 1
+                        </option>
+
+                        <option value="Hybrid">
+                            Hybrid
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="field">
+
+                    <label for="city">
+                        City
+                    </label>
+
+                    <select
+                        id="city"
+                        name="city"
+                        required
+                    >
+
+                        <option value="">
+                            Select city
+                        </option>
+
+                        <option>Mumbai</option>
+                        <option>Thane</option>
+                        <option>Dehradun</option>
+                        <option>Navi Mumbai</option>
+                        <option>Delhi</option>
+                        <option>Noida</option>
+                        <option>Ghaziabad</option>
+                        <option>Panchkula</option>
+                        <option>Faridabad</option>
+                        <option>Agra</option>
+                        <option>Lucknow</option>
+                        <option>Bangalore</option>
+                        <option>Hyderabad</option>
+                        <option>Chennai</option>
+                        <option>Pune</option>
+
+                    </select>
+
+                </div>
+
+                <div class="field">
+
+                    <label for="distance_travelled">
+                        Distance Travelled
+                    </label>
+
+                    <div class="input-unit">
+
+                        <input
+                            type="number"
+                            id="distance_travelled"
+                            name="distance_travelled"
+                            placeholder="35000"
+                            min="0"
+                            required
+                        >
+
+                        <span>KM</span>
+
+                    </div>
+
+                </div>
+
+                <div class="field">
+
+                    <label for="car_age">
+                        Car Age
+                    </label>
+
+                    <div class="input-unit">
+
+                        <input
+                            type="number"
+                            id="car_age"
+                            name="car_age"
+                            placeholder="3"
+                            min="0"
+                            step="0.1"
+                            required
+                        >
+
+                        <span>Years</span>
+
+                    </div>
+
+                </div>
+
+                <div class="field">
+
+                    <label for="km_per_year">
+                        KM Per Year
+                    </label>
+
+                    <div class="input-unit">
+
+                        <input
+                            type="number"
+                            id="km_per_year"
+                            name="km_per_year"
+                            placeholder="11666"
+                            min="0"
+                            required
+                        >
+
+                        <span>KM</span>
+
+                    </div>
+
+                </div>
+
+                <div class="field">
+
+                    <label for="brand_rank">
+                        Brand Rank
+                    </label>
+
+                    <input
+                        type="number"
+                        id="brand_rank"
+                        name="brand_rank"
+                        placeholder="Example: 1"
+                        min="1"
+                        required
+                    >
+
+                    <small>
+                        Use the brand rank from your dataset.
+                    </small>
+
+                </div>
+
+                <div class="field">
+
+                    <label for="new_and_less_used">
+                        Car Condition
+                    </label>
+
+                    <select
+                        id="new_and_less_used"
+                        name="new_and_less_used"
+                        required
+                    >
+
+                        <option value="">
+                            Select condition
+                        </option>
+
+                        <option value="1">
+                            New / Less Used
+                        </option>
+
+                        <option value="0">
+                            Used
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="button-area">
+
+                    <button
+                        type="submit"
+                    >
+
+                        <span>
+                            Predict Price
+                        </span>
+
+                        <strong>
+                            →
+                        </strong>
+
+                    </button>
+
+                    <p>
+                        Your data is processed locally through
+                        the Flask prediction API.
+                    </p>
+
+                </div>
+
+
+            </form>
+
+            {% if prediction %}
+
+            <div class="prediction-result">
+
+                <div class="check">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span>
+                        ESTIMATED CAR PRICE
+                    </span>
+
+                    <h2>
+                        {{ prediction }}
+                    </h2>
+
+                    <p>
+                        Predicted using your trained ML model.
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+            {% if error %}
+
+            <div class="error">
+
+                <strong>
+                    Prediction Error
+                </strong>
+
+                <p>
+                    {{ error }}
+                </p>
+
+            </div>
+
+            {% endif %}
+
+
+        </main>
+
+        <footer>
+
+            <span>
+                CarPrice AI • Used Car Price Prediction
+            </span>
+
+            <span>
+                Flask + Machine Learning
+            </span>
+
+        </footer>
+
+    </div>
+
+    <script>
+
+        const brandModels =
+            {{ brand_models | tojson }};
+
+
+        const brandSelect =
+            document.getElementById("brand");
+
+
+        const modelSelect =
+            document.getElementById("model_name");
+
+
+        function updateModels() {
+
+            const selectedBrand =
+                brandSelect.value;
+
+
+            modelSelect.innerHTML = "";
+
+
+            if (!selectedBrand) {
+
+                modelSelect.disabled = true;
+
+                modelSelect.innerHTML =
+                    '<option value="">Select brand first</option>';
+
+                return;
+
+            }
+
+
+            modelSelect.disabled = false;
+
+
+            const defaultOption =
+                document.createElement("option");
+
+            defaultOption.value = "";
+
+            defaultOption.textContent =
+                "Select model";
+
+            modelSelect.appendChild(
+                defaultOption
+            );
+
+
+            const models =
+                brandModels[selectedBrand] || [];
+
+
+            models.forEach(function(model) {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = model;
+
+                option.textContent = model;
+
+                modelSelect.appendChild(option);
+
+            });
+
+        }
+
+
+        brandSelect.addEventListener(
+            "change",
+            updateModels
+        );
+
+
+        // Restore model after prediction
+
+        {% if selected_brand %}
+
+        brandSelect.value =
+            "{{ selected_brand }}";
+
+        updateModels();
+
+        {% if selected_model %}
+
+        modelSelect.value =
+            "{{ selected_model }}";
+
+        {% endif %}
+
+        {% endif %}
+
+
+    </script>
+
+</body>
+
+</html>
