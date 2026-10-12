@@ -5,8 +5,8 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-FRONTEND_FOLDER = os.path.join(BASE_DIR, "frontend")
-MODEL_FOLDER = os.path.join(BASE_DIR, "models")
+FRONTEND_FOLDER = os.path.join(BASE_DIR, "FRONTEND")
+MODEL_FOLDER = os.path.join(BASE_DIR, "MODELS")
 
 app = Flask(
     __name__,
